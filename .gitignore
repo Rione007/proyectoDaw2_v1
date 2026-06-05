@@ -1,0 +1,26 @@
+# Eclipse / STS workspace
+.metadata/
+.metadata/**
+**/.metadata/
+**/.metadata/**
+
+# Maven
+target/
+*.class
+
+# Eclipse project files
+.settings/
+.classpath
+.project
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
