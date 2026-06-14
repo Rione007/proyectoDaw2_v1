@@ -4,11 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RestVentaApplication {
+public class RestProveedorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RestVentaApplication.class, args);
-		System.out.println("Corriendo REST-Venta.....");
+		SpringApplication.run(RestProveedorApplication.class, args);
 	}
 
 }
