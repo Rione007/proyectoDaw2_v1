@@ -8,6 +8,7 @@ public class RestVentaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestVentaApplication.class, args);
+		System.out.println("Corriendo REST-Venta.....");
 	}
 
 }
