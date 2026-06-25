@@ -1,5 +1,6 @@
 package cibertec.pe.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,100 +10,124 @@ import org.springframework.stereotype.Service;
 import cibertec.pe.DTO.CierreCajaDTO;
 import cibertec.pe.entity.AperturaCaja;
 import cibertec.pe.entity.CierreCaja;
+import cibertec.pe.repository.IAperturaCajaRepository;
 import cibertec.pe.repository.ICierreCajaRepository;
 
 @Service
 public class ICierreCajaServiceImpl implements ICierreCajaService {
-	
-	
+
 	@Autowired
-    private ICierreCajaRepository cierrerepo;
+	private ICierreCajaRepository cierrerepo;
 
+	@Autowired
+	private IAperturaCajaRepository aperturarepo;
 
-    @Override
-    public List<CierreCajaDTO> findAll() {
-        return cierrerepo.findAll()
-                .stream()
-                .map(this::toDTO)
-                .toList();
-    }
+	@Override
+	public List<CierreCajaDTO> findAll() {
 
-   
-    @Override
-    public Optional<CierreCajaDTO> findById(long codigo) {
-        return cierrerepo.findById(codigo)
-                .map(this::toDTO);
-    }
+		return cierrerepo.findAll().stream().map(this::toDTO).toList();
+	}
 
+	@Override
+	public Optional<CierreCajaDTO> findById(long codigo) {
 
-    @Override
-    public CierreCajaDTO save(CierreCajaDTO dto) {
+		return cierrerepo.findById(codigo).map(this::toDTO);
+	}
 
-        CierreCaja cierre = toEntity(dto);
-        CierreCaja saved = cierrerepo.save(cierre);
+	@Override
+	public CierreCajaDTO save(CierreCajaDTO dto) {
 
-        return toDTO(saved);
-    }
+		CierreCaja cierre = toEntity(dto);
 
-    @Override
-    public CierreCajaDTO update(long codigo, CierreCajaDTO dto) {
+		// CALCULO AUTOMATICO DE DIFERENCIA
+		if (cierre.getAperturaCaja() != null && cierre.getMontoFinal() != null
+				&& cierre.getAperturaCaja().getMontoInicial() != null) {
 
-        CierreCaja cierre = cierrerepo.findById(codigo)
-                .orElseThrow(() -> new RuntimeException("Cierre no encontrado"));
+			BigDecimal diferencia = cierre.getMontoFinal().subtract(cierre.getAperturaCaja().getMontoInicial());
 
-        cierre.setFechaCierre(dto.getFechaCierre());
-        cierre.setMontoFinal(dto.getMontoFinal());
-        cierre.setDiferencia(dto.getDiferencia());
-        cierre.setObservacion(dto.getObservacion());
+			cierre.setDiferencia(diferencia);
+		}
 
-        CierreCaja updated = cierrerepo.save(cierre);
+		CierreCaja saved = cierrerepo.save(cierre);
 
-        return toDTO(updated);
-    }
+		return toDTO(saved);
+	}
 
-   
-    @Override
-    public void deleteById(long codigo) {
-        cierrerepo.deleteById(codigo);
-    }
+	@Override
+	public CierreCajaDTO update(long codigo, CierreCajaDTO dto) {
 
-    
-    
-    
-    // MAPPER
-    private CierreCajaDTO toDTO(CierreCaja c) {
+		CierreCaja cierre = cierrerepo.findById(codigo).orElseThrow(() -> new RuntimeException("Cierre no encontrado"));
 
-        CierreCajaDTO dto = new CierreCajaDTO();
+		cierre.setFechaCierre(dto.getFechaCierre());
 
-        dto.setIdCierreCaja(c.getIdCierreCaja());
-        dto.setFechaCierre(c.getFechaCierre());
-        dto.setMontoFinal(c.getMontoFinal());
-        dto.setDiferencia(c.getDiferencia());
-        dto.setObservacion(c.getObservacion());
+		cierre.setMontoFinal(dto.getMontoFinal());
 
-        if (c.getAperturaCaja() != null) {
-            dto.setIdAperturaCaja(c.getAperturaCaja().getIdAperturaCaja());
-        }
+		cierre.setObservacion(dto.getObservacion());
 
-        return dto;
-    }
+		// RECALCULAR DIFERENCIA EN ACTUALIZACION
 
-    // MAPPER
-    private CierreCaja toEntity(CierreCajaDTO dto) {
+		if (cierre.getAperturaCaja() != null && cierre.getMontoFinal() != null
+				&& cierre.getAperturaCaja().getMontoInicial() != null) {
 
-        CierreCaja c = new CierreCaja();
+			BigDecimal diferencia = cierre.getMontoFinal().subtract(cierre.getAperturaCaja().getMontoInicial());
 
-        c.setFechaCierre(dto.getFechaCierre());
-        c.setMontoFinal(dto.getMontoFinal());
-        c.setDiferencia(dto.getDiferencia());
-        c.setObservacion(dto.getObservacion());
+			cierre.setDiferencia(diferencia);
+		}
 
-        if (dto.getIdAperturaCaja() != null) {
-            AperturaCaja apertura = new AperturaCaja();
-            apertura.setIdAperturaCaja(dto.getIdAperturaCaja());
-            c.setAperturaCaja(apertura);
-        }
+		CierreCaja updated = cierrerepo.save(cierre);
 
-        return c;
-    }
+		return toDTO(updated);
+	}
+
+	@Override
+	public void deleteById(long codigo) {
+
+		cierrerepo.deleteById(codigo);
+	}
+
+//CONVERTIR DE ENTIDAS A DTO MOSTRAR
+
+	private CierreCajaDTO toDTO(CierreCaja c) {
+
+		CierreCajaDTO dto = new CierreCajaDTO();
+
+		dto.setIdCierreCaja(c.getIdCierreCaja());
+
+		dto.setFechaCierre(c.getFechaCierre());
+
+		dto.setMontoFinal(c.getMontoFinal());
+
+		dto.setDiferencia(c.getDiferencia());
+
+		dto.setObservacion(c.getObservacion());
+
+		if (c.getAperturaCaja() != null) {
+
+			dto.setIdAperturaCaja(c.getAperturaCaja().getIdAperturaCaja());
+		}
+
+		return dto;
+	}
+
+	private CierreCaja toEntity(CierreCajaDTO dto) {
+
+		CierreCaja c = new CierreCaja();
+
+		c.setFechaCierre(dto.getFechaCierre());
+
+		c.setMontoFinal(dto.getMontoFinal());
+
+		c.setObservacion(dto.getObservacion());
+
+		if (dto.getIdAperturaCaja() != null) {
+
+			AperturaCaja apertura = aperturarepo.findById(dto.getIdAperturaCaja())
+					.orElseThrow(() -> new RuntimeException("Apertura no encontrada"));
+
+			c.setAperturaCaja(apertura);
+		}
+
+		return c;
+	}
+
 }

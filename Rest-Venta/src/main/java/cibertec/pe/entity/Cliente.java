@@ -2,6 +2,8 @@ package cibertec.pe.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,10 +22,13 @@ public class Cliente {
 	private String telefono;
 	private String email;
 
-	// RELACION
-	@OneToMany(mappedBy = "cliente")
-	private List<Venta> ventas;
-
+	
+	public Cliente () {}
+	
+	   // RELACION
+    @OneToMany(mappedBy = "cliente")
+    @JsonIgnore
+    private List<Venta> ventas;
 	public Cliente(long idCliente, String nombre, String apellido, String documento, String telefono, String email,
 			List<Venta> ventas) {
 		super();

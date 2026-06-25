@@ -1,5 +1,7 @@
 package cibertec.pe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,11 +22,13 @@ public class DetalleVenta {
 	   	private double precioUnitario;
 	   	private double subTotal;
 	
-	   	public DetalleVenta () {}
+	   	public DetalleVenta () {}	
 	
-	   	@ManyToOne
-	    @JoinColumn(name = "idVenta")
-	    private Venta venta;
+
+@ManyToOne
+@JoinColumn(name = "idVenta")
+@JsonIgnore
+private Venta venta;
 
 
 		public DetalleVenta(Long idDetalleVenta, long productoId, String descripcion, int cantidad,

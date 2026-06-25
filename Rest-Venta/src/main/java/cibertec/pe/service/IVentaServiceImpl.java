@@ -9,132 +9,132 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cibertec.pe.DTO.DetalleVentaDTO;
+import cibertec.pe.DTO.ProductoDTO;
 import cibertec.pe.DTO.VentaDTO;
 import cibertec.pe.entity.Cliente;
 import cibertec.pe.entity.DetalleVenta;
 import cibertec.pe.entity.Venta;
+import cibertec.pe.feign.ProductoClient;
 import cibertec.pe.repository.IClienteRepository;
 import cibertec.pe.repository.IVentaRepository;
 
 @Service
 public class IVentaServiceImpl implements IVentaService {
 
-	
 	@Autowired
-		private IVentaRepository ventarepo;
-	
-	
+	private IVentaRepository ventaRepo;
+
 	@Autowired
-	private IClienteRepository clienterepo;
+	private IClienteRepository clienteRepo;
+
+	@Autowired
+	private ProductoClient productoClient;
 
 	@Override
 	public List<Venta> findAll() {
-		// TODO Auto-generated method stub
-		return ventarepo.findAll();
+
+		return ventaRepo.findAll();
+
 	}
 
 	@Override
-	public Optional<Venta> findById(long codigo) {
-		// TODO Auto-generated method stub
-		return ventarepo.findById(codigo);
+	public Optional<Venta> findById(long id) {
+
+		return ventaRepo.findById(id);
+
 	}
 
 	@Override
 	public Venta save(Venta venta) {
-		// TODO Auto-generated method stub
-		return ventarepo.save(venta);
+
+		return ventaRepo.save(venta);
+
 	}
 
-	
-	
-	
-	
-	
-	
-	@Override
-	public Venta update(long codigo, Venta venta) {
-		
-		Venta ven = ventarepo.findById(codigo).orElseThrow(() -> new RuntimeException("Venta no encontrado"));
-			
-		//campos seguros para update
-		ven.setEstado(venta.getEstado());
-		ven.setFecha(venta.getFecha());
-	
-		return ventarepo.save(ven);	
-	}
-	@Override
-	public void deleteById(long codigo) {
-		ventarepo.deleteById(codigo);
-		
-	}
-
-	
-	
 	@Override
 	public Venta crearVenta(VentaDTO dto) {
-		
-		
-		
-		 //  Buscare un  cliente
-        Cliente cliente = clienterepo.findById(dto.getIdCliente())
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-        
-        //  Creare venta
-        Venta venta = new Venta();
-        venta.setCliente(cliente);
-        venta.setEstado(dto.getEstado());
-        venta.setFecha(LocalDateTime.now());
-        
-        
-        	//por ahora en 0 hasta conectar con Inventario
-        double total = 0;
-        
-        
-        //  Crear los detalles
-        List<DetalleVenta> detalles = new ArrayList<>();
 
-        for (DetalleVentaDTO d : dto.getDetalles()) {
+		// Buscar cliente
+		Cliente cliente = clienteRepo.findById(dto.getIdCliente())
+				.orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-            DetalleVenta detalle = new DetalleVenta();
+		// Crear venta
+		Venta venta = new Venta();
 
-            detalle.setProductoId(d.getProductoId());
-            detalle.setCantidad(d.getCantidad());
+		venta.setCliente(cliente);
 
-            // consultar inventario
-            double precio = 10.0; // temporal
-            detalle.setPrecioUnitario(precio);
+		venta.setFecha(LocalDateTime.now());
 
-            double subtotal = precio * d.getCantidad();
-            detalle.setSubTotal(subtotal);
+		venta.setEstado(dto.getEstado());
 
-            detalle.setVenta(venta);
+		double total = 0;
 
-            total += subtotal;
+		List<DetalleVenta> detalles = new ArrayList<>();
 
-            detalles.add(detalle);
-        }
+		// Recorrer productos de la venta
+		for (DetalleVentaDTO d : dto.getDetalles()) {
 
-        //	 asignar total y detalles
-        venta.setTotal(total);
-        venta.setDetalles(detalles);
+			// Consultar producto en microservicio Inventario
+			ProductoDTO producto = productoClient.buscarProducto(d.getProductoId());
 
-        // save
-        return ventarepo.save(venta);
-    }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+			if (producto == null) {
+
+				throw new RuntimeException("Producto no encontrado: " + d.getProductoId());
+
+			}
+
+			DetalleVenta detalle = new DetalleVenta();
+
+			// Guardamos el id externo del producto
+			detalle.setProductoId(producto.getId());
+
+			// Nombre que viene del microservicio
+			detalle.setDescripcion(producto.getNombre());
+
+			detalle.setCantidad(d.getCantidad());
+
+			// Precio real del producto
+			double precio = producto.getPrecioVenta();
+
+			detalle.setPrecioUnitario(precio);
+
+			double subtotal = precio * d.getCantidad();
+
+			detalle.setSubTotal(subtotal);
+
+			// Relación con venta
+			detalle.setVenta(venta);
+
+			total += subtotal;
+
+			detalles.add(detalle);
+
+		}
+
+		venta.setTotal(total);
+
+		venta.setDetalles(detalles);
+
+		return ventaRepo.save(venta);
+
+	}
+
+	@Override
+	public Venta update(long id, Venta venta) {
+
+		Venta existente = ventaRepo.findById(id).orElseThrow(() -> new RuntimeException("Venta no encontrada"));
+
+		existente.setEstado(venta.getEstado());
+
+		return ventaRepo.save(existente);
+
+	}
+
+	@Override
+	public void deleteById(long id) {
+
+		ventaRepo.deleteById(id);
+
+	}
+
 }

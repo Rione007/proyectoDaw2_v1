@@ -20,4 +20,100 @@ public class Categoria {
     
     @OneToMany(mappedBy = "categoria")
     private List<Producto> productos;
+    
+    
+    
+    
+    public Categoria () {}
+
+
+
+
+	public Categoria(Long id, String nombre, Boolean estado, List<Producto> productos) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.estado = estado;
+		this.productos = productos;
+	}
+
+
+
+
+	public Categoria(String nombre, Boolean estado, List<Producto> productos) {
+		super();
+		this.nombre = nombre;
+		this.estado = estado;
+		this.productos = productos;
+	}
+
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+
+
+	public Boolean getEstado() {
+		return estado;
+	}
+
+
+
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+
+
+
+
+	public List<Producto> getProductos() {
+		return productos;
+	}
+
+
+
+
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

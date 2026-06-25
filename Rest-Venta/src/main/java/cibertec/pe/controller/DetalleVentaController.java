@@ -16,53 +16,41 @@ import org.springframework.web.bind.annotation.RestController;
 import cibertec.pe.entity.DetalleVenta;
 import cibertec.pe.service.IDetalleVentaService;
 
-@RestController
+@RestController	
 @RequestMapping("/detalleVenta")
 public class DetalleVentaController {
-	
-	
-	
-	
-	
-	
-	
-	
-	 @Autowired
-	    private IDetalleVentaService detalleVentaService;
-
-	    @GetMapping
-	    public List<DetalleVenta> findAll() {
-	        return detalleVentaService.findAll();
-	    }
-
-	    @GetMapping("/{id}")
-	    public Optional<DetalleVenta> findById(@PathVariable long id) {
-	        return detalleVentaService.findById(id);
-	    }
 
 
-	    @PostMapping("/save")
-	    public DetalleVenta save(@RequestBody DetalleVenta detalleVenta) {
-	        return detalleVentaService.save(detalleVenta);
-	    }
+    @Autowired
+    private IDetalleVentaService detalleVentaService;
 
-	
-	    @PutMapping("/{id}")
-	    public DetalleVenta update(@PathVariable long id,
-	                               @RequestBody DetalleVenta detalleVenta) {
-	        return detalleVentaService.update(id, detalleVenta);
-	    }
 
-	    @DeleteMapping("/{id}")
-	    public String delete(@PathVariable long id) {
-	        detalleVentaService.deleteById(id);
-	        return "Detalle de venta eliminado correctamente";
-	    }
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	}
+    @GetMapping
+    public List<DetalleVenta> findAll() {
+
+        return detalleVentaService.findAll();
+
+    }
+
+
+    @GetMapping("/{id}")
+    public DetalleVenta findById(
+            @PathVariable long id) {
+
+        return detalleVentaService.findById(id)
+                .orElseThrow(() ->
+                new RuntimeException("Detalle no encontrado"));
+
+    }
+
+
+    @DeleteMapping("/{id}")
+    public String delete(
+            @PathVariable long id) {
+
+        detalleVentaService.deleteById(id);
+
+        return "Detalle eliminado correctamente";
+    }
+
+}
