@@ -9,13 +9,23 @@ import cibertec.pe.entity.Venta;
 public interface IVentaService {
 	
 	
-	List<Venta>				findAll();
-	Optional<Venta>         findById(long codigo);
-	public Venta 			save(Venta venta);
-	Venta					update(long codigo, Venta venta);
-	public void 			deleteById(long codigo);
-	Venta 					crearVenta(VentaDTO dto);
-	
+
+    List<Venta> findAll();
+
+
+    Optional<Venta> findById(long id);
+
+
+    Venta save(Venta venta);
+
+
+    Venta update(long id, Venta venta);
+
+
+    void deleteById(long id);
+
+
+    Venta crearVenta(VentaDTO dto);
 	
 	
 	

@@ -1,56 +1,56 @@
 package cibertec.pe.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import cibertec.pe.DTO.VentaDTO;
 import cibertec.pe.entity.Venta;
 import cibertec.pe.service.IVentaService;
 
 @RestController
 @RequestMapping("/ventas")
 public class VentaController {
-	
+
 	@Autowired
-    private IVentaService ventaService;
+	private IVentaService service;
 
- 
-    @GetMapping
-    public List<Venta> findAll() {
-        return ventaService.findAll();
-    }
+	@GetMapping
+	public List<Venta> listar() {
 
+		return service.findAll();
 
-    @GetMapping("/{id}")
-    public Optional<Venta> findById(@PathVariable long id) {
-        return ventaService.findById(id);
-    }
+	}
 
+	@GetMapping("/{id}")
+	public Venta buscar(@PathVariable long id) {
 
-    @PostMapping("/save")
-    public Venta save(@RequestBody Venta venta) {
-        return ventaService.save(venta);
-    }
+		return service.findById(id).orElseThrow();
 
- 
-    @PutMapping("/{id}")
-    public Venta update(@PathVariable long id, @RequestBody Venta venta) {
-        return ventaService.update(id, venta);
-    }
+	}
 
+	@PostMapping
+	public Venta crear(@RequestBody VentaDTO dto) {
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable long id) {
-        ventaService.deleteById(id);
-        return "Venta eliminada correctamente";
-    }
+		return service.crearVenta(dto);
+
+	}
+
+	@PutMapping("/{id}")
+	public Venta actualizar(@PathVariable long id, @RequestBody Venta venta) {
+
+		return service.update(id, venta);
+
+	}
+
+	@DeleteMapping("/{id}")
+	public String eliminar(@PathVariable long id) {
+
+		service.deleteById(id);
+
+		return "Venta eliminada";
+
+	}
+
 }

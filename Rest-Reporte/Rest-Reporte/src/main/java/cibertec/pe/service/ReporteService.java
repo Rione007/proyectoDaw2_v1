@@ -130,53 +130,53 @@ public class ReporteService {
     
     
     
-    
-    
-    
-    
-    
-//productos mas vendidos
-
-    public List<ProductoMasVendidoDTO> obtenerProductosMasVendidos() {
-
-        List<DetalleVentaDTO> detalles =
-                detalleVentaClient.listarDetalles();
-
-        Map<Long, ProductoMasVendidoDTO> mapa = new HashMap<>();
-
-        for (DetalleVentaDTO detalle : detalles) {
-
-            if (mapa.containsKey(detalle.getProductoId())) {
-
-                ProductoMasVendidoDTO actual =
-                        mapa.get(detalle.getProductoId());
-
-                actual.setCantidadVendida(
-                        actual.getCantidadVendida()
-                        + detalle.getCantidad()
-                );
-
-            } else {
-
-                mapa.put(
-                    detalle.getProductoId(),
-                    new ProductoMasVendidoDTO(
-                        detalle.getProductoId(),
-                        detalle.getDescripcion(),
-                        detalle.getCantidad()
-                    )
-                );
-            }
-        }
-
-        return mapa.values()
-                .stream()
-                .sorted((a, b) ->
-                    Integer.compare(
-                        b.getCantidadVendida(),
-                        a.getCantidadVendida()
-                    )
-                )
-                .toList();
-    }
-}
+	    
+	    
+	    
+	    
+	    
+	//productos mas vendidos
+	
+	    public List<ProductoMasVendidoDTO> obtenerProductosMasVendidos() {
+	
+	        List<DetalleVentaDTO> detalles =
+	                detalleVentaClient.listarDetalles();
+	
+	        Map<Long, ProductoMasVendidoDTO> mapa = new HashMap<>();
+	
+	        for (DetalleVentaDTO detalle : detalles) {
+	
+	            if (mapa.containsKey(detalle.getProductoId())) {
+	
+	                ProductoMasVendidoDTO actual =
+	                        mapa.get(detalle.getProductoId());
+	
+	                actual.setCantidadVendida(
+	                        actual.getCantidadVendida()
+	                        + detalle.getCantidad()
+	                );
+	
+	            } else {
+	
+	                mapa.put(
+	                    detalle.getProductoId(),
+	                    new ProductoMasVendidoDTO(
+	                        detalle.getProductoId(),
+	                        detalle.getDescripcion(),
+	                        detalle.getCantidad()
+	                    )
+	                );
+	            }
+	        }
+	
+	        return mapa.values()
+	                .stream()
+	                .sorted((a, b) ->
+	                    Integer.compare(
+	                        b.getCantidadVendida(),
+	                        a.getCantidadVendida()
+	                    )
+	                )
+	                .toList();
+	    }
+	}

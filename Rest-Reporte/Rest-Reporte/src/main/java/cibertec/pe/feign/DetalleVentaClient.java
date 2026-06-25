@@ -21,7 +21,7 @@ public interface DetalleVentaClient {
 	   @GetMapping("/ventas")
 	   List<VentaDTO> listarventas();
 	   
-	   
+	   	
 	   
 	   
 
