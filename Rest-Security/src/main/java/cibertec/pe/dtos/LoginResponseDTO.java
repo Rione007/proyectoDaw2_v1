@@ -85,6 +85,22 @@ public class LoginResponseDTO {
 	public void setSucursalId(Long sucursalId) {
 		this.sucursalId = sucursalId;
 	}
+
+	public LoginResponseDTO() {
+		
+	}
+
+	public LoginResponseDTO(String token, Long usuarioId, String username, String nombres, String email,
+			String apellidos, Long rolId, Long sucursalId) {
+		this.token = token;
+		this.usuarioId = usuarioId;
+		this.username = username;
+		this.nombres = nombres;
+		this.email = email;
+		this.apellidos = apellidos;
+		this.rolId = rolId;
+		this.sucursalId = sucursalId;
+	}
     
     
     
