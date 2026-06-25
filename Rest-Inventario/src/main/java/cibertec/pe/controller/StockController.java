@@ -12,7 +12,7 @@ import cibertec.pe.service.IStockService;
 
 
 @RestController
-@RequestMapping("/stocks")
+@RequestMapping("/api/stocks")
 public class StockController {
 
 

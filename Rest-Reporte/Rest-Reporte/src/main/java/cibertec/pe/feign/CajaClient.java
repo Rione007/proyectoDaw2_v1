@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import cibertec.pe.DTO.MovimientoCajaDTO;
 
-@FeignClient(name = "Rest-Caja")
+@FeignClient(name = "REST-CAJA")
 public interface CajaClient {
 
-    @GetMapping("/movimientoCaja/list")
+    @GetMapping("/api/movimientoCaja/list")
     List<MovimientoCajaDTO> listarMovimientos();
 }

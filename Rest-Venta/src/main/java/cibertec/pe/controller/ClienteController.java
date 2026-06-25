@@ -17,7 +17,7 @@ import cibertec.pe.entity.Cliente;
 import cibertec.pe.service.IClienteService;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
 	

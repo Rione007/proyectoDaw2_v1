@@ -16,7 +16,7 @@ import cibertec.pe.entity.Proveedor;
 import cibertec.pe.service.IProveedorService;
 
 @RestController
-@RequestMapping("/proveedores")
+@RequestMapping("/api/proveedores")
 public class ProveedorController {
 
 	

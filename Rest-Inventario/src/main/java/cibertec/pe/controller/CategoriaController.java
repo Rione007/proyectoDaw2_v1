@@ -10,7 +10,7 @@ import cibertec.pe.service.ICategoriaService;
 
 
 @RestController
-@RequestMapping("/categorias")
+@RequestMapping("/api/categorias")
 public class CategoriaController {
 
 

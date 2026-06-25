@@ -18,7 +18,7 @@ import cibertec.pe.DTO.CierreCajaDTO;
 import cibertec.pe.service.ICierreCajaService;
 
 @RestController
-@RequestMapping("/cierreCaja")
+@RequestMapping("/api/cierreCaja")
 public class ICierreCajaController {
 
 	@Autowired

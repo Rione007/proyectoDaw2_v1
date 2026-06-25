@@ -18,7 +18,7 @@ import cibertec.pe.entity.MovimientoCaja;
 import cibertec.pe.service.IMovimientoCajaService;
 
 @RestController
-@RequestMapping("/movimientoCaja")
+@RequestMapping("/api/movimientoCaja")
 public class MovimientoCajaController {
 
 	@Autowired

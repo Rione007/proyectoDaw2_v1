@@ -10,7 +10,7 @@ import cibertec.pe.entity.OrdenCompra;
 import cibertec.pe.service.IOrdenCompraService;
 
 @RestController
-@RequestMapping("/orden_compra")
+@RequestMapping("/api/orden_compra")
 public class OrdenCompraController {
 
 	@Autowired

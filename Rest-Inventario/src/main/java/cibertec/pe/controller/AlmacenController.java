@@ -9,7 +9,7 @@ import cibertec.pe.entites.Almacen;
 import cibertec.pe.service.IAlmacenService;
 
 @RestController
-@RequestMapping("/almacenes")
+@RequestMapping("/api/almacenes")
 public class AlmacenController {
 
 	@Autowired

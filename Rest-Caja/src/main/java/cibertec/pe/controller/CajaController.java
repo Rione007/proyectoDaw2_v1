@@ -18,7 +18,7 @@ import cibertec.pe.entity.Caja;
 import cibertec.pe.service.ICajaService;
 
 @RestController
-@RequestMapping("/caja")
+@RequestMapping("/api/caja")
 public class CajaController {
 
 	@Autowired

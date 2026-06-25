@@ -9,16 +9,16 @@ import cibertec.pe.DTO.DetalleVentaDTO;
 import cibertec.pe.DTO.MovimientoCajaDTO;
 import cibertec.pe.DTO.VentaDTO;
 
-@FeignClient (name = "Rest-Venta") 
+@FeignClient (name = "REST-VENTA") 
 public interface DetalleVentaClient {
 
 	
 	
-	   @GetMapping("/detalleVenta")
+	   @GetMapping("/api/detalleVenta")
 	    List<DetalleVentaDTO> listarDetalles();
 	
 		
-	   @GetMapping("/ventas")
+	   @GetMapping("/api/ventas")
 	   List<VentaDTO> listarventas();
 	   
 	   	

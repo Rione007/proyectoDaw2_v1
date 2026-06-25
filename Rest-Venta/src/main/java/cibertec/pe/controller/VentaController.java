@@ -10,7 +10,7 @@ import cibertec.pe.entity.Venta;
 import cibertec.pe.service.IVentaService;
 
 @RestController
-@RequestMapping("/ventas")
+@RequestMapping("/api/ventas")
 public class VentaController {
 
 	@Autowired

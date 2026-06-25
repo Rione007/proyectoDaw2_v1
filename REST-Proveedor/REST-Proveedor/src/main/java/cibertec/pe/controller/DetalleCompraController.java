@@ -16,7 +16,7 @@ import cibertec.pe.entity.DetalleCompra;
 import cibertec.pe.service.IDetalleCompraService;
 
 @RestController
-@RequestMapping("/detalle_compra")
+@RequestMapping("/api/detalle_compra")
 public class DetalleCompraController {
 	
 	

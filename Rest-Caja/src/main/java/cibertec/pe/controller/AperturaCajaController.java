@@ -18,7 +18,7 @@ import cibertec.pe.DTO.AperturaCajaDTO;
 import cibertec.pe.service.IAperturaCajaService;
 
 @RestController
-@RequestMapping("/aperturaCaja")
+@RequestMapping("/api/aperturaCaja")
 public class AperturaCajaController {
 	
 	

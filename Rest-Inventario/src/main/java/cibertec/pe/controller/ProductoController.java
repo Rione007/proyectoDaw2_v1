@@ -10,13 +10,13 @@ import cibertec.pe.entites.Producto;
 import cibertec.pe.service.IProductoService;
 
 @RestController
-@RequestMapping("/productos")
+@RequestMapping("/api/productos")
 public class ProductoController {
 
     @Autowired
     private IProductoService service;
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Producto> listar() {
         return service.findAll();
     }
