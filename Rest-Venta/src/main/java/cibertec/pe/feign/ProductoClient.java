@@ -10,9 +10,9 @@ import cibertec.pe.DTO.ProductoDTO;
 public interface ProductoClient {
 	
 
-    @GetMapping("/productos/{id}")
+    @GetMapping("/api/productos/{id}")
     ProductoDTO buscarProducto(
             @PathVariable("id") Long id
-    );
+    );	
 
 }

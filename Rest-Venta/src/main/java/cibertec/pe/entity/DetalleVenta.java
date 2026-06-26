@@ -1,4 +1,4 @@
-package cibertec.pe.entity;
+	package cibertec.pe.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
